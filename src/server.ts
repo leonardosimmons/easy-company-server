@@ -15,6 +15,8 @@ import { consoleText } from '../lib/definitions';
 
 import HeaderRoutes from '../routes/headers';
 import ErrorRoutes from '../routes/errors';
+import AuthRoutes from '../modules/auth/routes';
+import UserRoutes from '../modules/user/routes';
 
 const { DEV_PORT, PORT } = process.env;
 
@@ -46,6 +48,8 @@ async function startApolloServer(schema: NexusGraphQLSchema, context: Context) {
 
   // Routes ----------------------
   app.use(HeaderRoutes);
+  app.use('/auth', AuthRoutes);
+  app.use('/admin/user/', UserRoutes);
   app.use(ErrorRoutes);
 
   await new Promise((resolve: any) =>
