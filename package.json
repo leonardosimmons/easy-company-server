@@ -1,0 +1,55 @@
+{
+  "name": "easy-company-server",
+  "version": "1.0.0",
+  "description": "Easy Company Server",
+  "scripts": {
+    "dev": "ts-node-dev --no-notify --respawn --transpile-only src/server",
+    "start": "node dist/server",
+    "clean": "rm -rf dist",
+    "postinstall": "tsc",
+    "build": "npm -s run clean && npm -s run generate && tsc",
+    "generate": "npm -s run update:prisma && npm -s run generate:nexus",
+    "generate:nexus": "ts-node --transpile-only graphql/schema",
+    "update:prisma": "prisma migrate dev && prisma generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardosimmons/easy-company-server.git"
+  },
+  "author": "Leonardo Simmons",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leonardosimmons/easy-company-server/issues"
+  },
+  "homepage": "https://github.com/leonardosimmons/easy-company-server#readme",
+  "dependencies": {
+    "@prisma/client": "^3.3.0",
+    "apollo-server": "^3.4.0",
+    "apollo-server-express": "^3.4.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.6.1",
+    "graphql-depth-limit": "^1.1.0",
+    "graphql-query-complexity": "^0.9.0",
+    "graphql-scalars": "^1.12.0",
+    "jsonwebtoken": "^8.5.1",
+    "nexus": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/graphql": "^14.5.0",
+    "@types/graphql-depth-limit": "^1.1.3",
+    "@types/jsonwebtoken": "^8.5.5",
+    "@types/node": "^16.11.1",
+    "@types/ws": "^8.2.0",
+    "dotenv": "^10.0.0",
+    "prettier": "^2.4.1",
+    "prisma": "^3.3.0",
+    "ts-node": "^10.3.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.4"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  }
+}
