@@ -1,4 +1,4 @@
-import { PermissionLevel } from '../auth/enums';
+import { PermissionLevel } from '../auth/auth.config';
 
 export type UserAuthorization = {
   id: null | string;
