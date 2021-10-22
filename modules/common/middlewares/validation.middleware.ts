@@ -9,7 +9,8 @@ export async function verifyRefreshBodyField(
   res: Express.Response,
   next: Express.NextFunction,
 ) {
-  if (res.locals && res.locals.refresh_token) {
+  if (req.body && req.body.refresh_token) {
+    res.locals.refresh_token = req.body.refresh_token;
     return next();
   } else {
     res.status(400).json({

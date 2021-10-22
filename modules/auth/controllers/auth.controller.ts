@@ -48,7 +48,7 @@ export async function refresh_token(
     const token = jwt.sign(res.locals.jwt, JWT_SECRET as string, {
       expiresIn: JWT_EXPIRATION_IN_SECONDS,
     });
-    res.status(201).json({ id: token });
+    res.status(201).json({ accessToken: token });
   } catch (err) {
     res.status(500).json({
       errors: err,

@@ -21,9 +21,9 @@ export async function createUser(
         lastname: req.body.lastname || '',
         email: req.body.email,
         password: pw,
-        permissionLevel: 1,
-        role: 'user',
-        status: 'authorized',
+        permissionLevel: req.body.role === 'trial' ? 0 : 1,
+        role: req.body.role === 'trial' ? req.body.role : 'user',
+        status: 'offline',
       },
     });
 
@@ -137,45 +137,22 @@ export async function patchUser(
   next: Express.NextFunction,
 ): Promise<void> {
   const prisma = new PrismaClient();
-
   try {
-    const user = await prisma.user.findUnique({
+    const result = await prisma.user.update({
       where: {
-        id: String(req.query.userid),
+        id: String(req.params.userId),
       },
-      select: {
-        permissionLevel: true,
-      },
+      data: { ...req.body },
     });
 
-    try {
-      const result = await prisma.user.update({
-        where: {
-          id: String(req.params.userId),
-        },
-        data: {
-          ...req.body,
-          permissionLevel: req.body.permissionLevel
-            ? parseInt(req.body.permissionLevel)
-            : user?.permissionLevel,
-        },
-      });
-
-      res.status(204).json({
-        message: 'User successfully updated',
-        payload: {
-          id: result.id,
-        },
-      });
-    } catch (err) {
-      const error = httpError(err as Error, 'Unable to udpate user');
-      next(error);
-    }
+    res.status(204).json({
+      message: 'User successfully updated',
+      payload: {
+        id: result.id,
+      },
+    });
   } catch (err) {
-    const error = httpError(
-      err as Error,
-      'Unable to retrieve user from database',
-    );
+    const error = httpError(err as Error, 'Unable to udpate user');
     next(error);
   }
 }
