@@ -1,14 +1,15 @@
 import Express from 'express';
 import * as UserController from './controllers/user.controllers';
-import * as PermissionMiddleware from '../common/middlewares/auth.permissions';
-import * as ValidationMiddleware from '../common/middlewares/auth.validation';
+import * as UserMiddleware from './middleware/user.middleware';
+import * as PermissionMiddleware from '../common/middlewares/permissions.middleware';
+import * as ValidationMiddleware from '../common/middlewares/validation.middleware';
 import * as RequestFieldsMiddleWare from '../common/middlewares/common.fields';
 import { PermissionLevel } from '../auth/auth.config';
 
 const router = Express.Router();
 
 router.post('/create-user', [
-  RequestFieldsMiddleWare.hasRequestBody,
+  UserMiddleware.hasValidCreateUserFields,
   UserController.createUser,
 ]);
 
